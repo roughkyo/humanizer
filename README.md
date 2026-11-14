@@ -1,4 +1,4 @@
-# humanizer (humanize-kr) - 한국어 AI 티 제거 윤문 스킬 (v3.0.1)
+# humanizer (humanize-kr) - 한국어 AI 티 제거 윤문 스킬 (v3.1.0)
 
 한국어 글에서 AI가 쓴 티를 지우는 윤문 스킬입니다. 글의 성격에 맞춰 **세 가지 모드(레지스터)** 로 고칩니다.
 Claude Code·Codex·Google Antigravity에서 같은 스킬로 씁니다.
@@ -8,6 +8,8 @@ Claude Code·Codex·Google Antigravity에서 같은 스킬로 씁니다.
 | **일반** | 칼럼·에세이·블로그·논설 산문 | 현학적인 한자 추상어·설명 없는 은유·감동 마무리를 걷어냄 |
 | **techdoc** | 수업 슬라이드 원고·실습 지도안·매뉴얼·기술 문서 | 전문 용어를 지키고, 개조식 끝맺음(~함/~임)·상투 비유 금지 |
 | **공문** (v3.0 신규) | 공문·기안문·보고서·계획서·결과/성과보고서·회의자료 | **한 항목 120자 초과**와 **개조식 항목의 '-다/-습니다' 종결**을 반드시 고침 |
+
+**모드는 직접 고릅니다.** 윤문을 시작하기 전에 글을 분석해 추천 모드와 그 근거를 보여 주고, 세 모드 중 하나를 고르게 합니다. 요청할 때 모드를 말했거나 다른 스킬이 중간 단계로 부를 때는 묻지 않습니다.
 
 작업량은 따로 고릅니다: **가볍게(light)** · **기본(standard)** · **정밀(heavy)**. 말하지 않으면 글을 분석해 자동으로 정합니다.
 
@@ -32,7 +34,7 @@ python install.py
 - 미리 보기만: `python install.py --dry-run`
 - 설치된 버전 확인: `python install.py --check`
 - 일부만 설치: `python install.py --only claude agents`
-- claude.ai(웹·데스크탑 채팅)에 올릴 zip: `python install.py --zip` → `dist/humanize-kr-v3.0.zip`을 claude.ai의 스킬 설정에서 업로드
+- claude.ai(웹·데스크탑 채팅)에 올릴 zip: `python install.py --zip` → `dist/humanize-kr-v<버전>.zip`을 claude.ai의 스킬 설정에서 업로드
 
 설치 후 **새 세션(또는 앱 재시작)** 부터 적용됩니다.
 
@@ -47,7 +49,7 @@ python install.py
 이 보고서 고치지 말고 검토만 해줘
 ```
 
-- 모드를 직접 정하려면: `레지스터: 공문` / `레지스터: 기술문서` / `레지스터: 일반`
+- 모드를 미리 정하려면(질문 생략): `레지스터: 공문` / `레지스터: 기술문서` / `레지스터: 일반`
 - 작업량을 정하려면: "가볍게", "정밀하게"
 - 결과는 작업 폴더의 `_workspace/<날짜-번호>/final.md`에 저장됩니다. 원본 파일은 고치지 않습니다.
 
