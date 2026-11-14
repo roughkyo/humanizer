@@ -1,0 +1,17 @@
+# 작업 산출물 — 원고 원문이 들어 있어 로컬 전용
+_workspace/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+
+# 비밀값
+.env
+.env.*
+*.pem
+*.key
+
+# OS
+.DS_Store
+Thumbs.db
