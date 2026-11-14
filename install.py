@@ -21,6 +21,7 @@ from __future__ import annotations
 
 import argparse
 import datetime
+import os
 import re
 import shutil
 import sys
@@ -49,6 +50,9 @@ def version_of(skill_md: Path) -> str:
 def install(name: str, dst: Path, stamp: str, dry: bool) -> None:
     src_ver, dst_ver = version_of(SKILL / "SKILL.md"), version_of(dst / "SKILL.md")
     print(f"[{name}] {dst}  설치본 v{dst_ver} → 정본 v{src_ver}")
+    if os.path.isjunction(dst) or dst.is_symlink():
+        print("  연결(junction)로 정본을 가리키고 있어 복사가 필요 없음 — 건너뜀")
+        return
     if dry:
         return
     if dst.exists():
