@@ -3,11 +3,12 @@ name: humanize-kr
 description: "한국어 글의 AI 티를 지우는 윤문 스킬. 레지스터 3종 — 일반(산문·칼럼·에세이), techdoc(수업자료·기술문서), 공문(공문·기안문·보고서·계획서·성과보고서, 한 항목 120자 초과·'-다/-습니다' 종결을 hard로 고침). '윤문해줘', 'AI 티 없애줘', '공문 윤문', '보고서 다듬어줘', '정밀하게 윤문' 요청에 사용. Claude Code·Codex·Antigravity 공용."
 ---
 
-# Humanize-KR — AI 한글 티 제거 오케스트레이터 (v3.0)
+# Humanize-KR — AI 한글 티 제거 오케스트레이터 (v3.0.1)
 
 > 원작: [im-not-ai / humanize-korean](https://github.com/epoko77-ai/im-not-ai) by epoko77-ai (MIT). 스킬 단독 패키지로 재구성 — 스크립트·룰북·에이전트 정의를 스킬 폴더에 번들.
 > 공문 레지스터: [slop-rewrite](https://github.com/byungjunjang/slop-rewrite) by Byungjun Jang (MIT)의 개조식 보고서 가이드·검사기를 옮겨 왔다. `THIRD_PARTY_NOTICES.md` 참조.
 
+> **v3.0.1** — 공문 판정 예외 2줄: 장르 힌트 `report`는 공문 근거가 아님, 호출자가 문장 수·앵커 유지를 요구하면 공문 제외(eli5 연동 보호).
 > **v3.0.0** — 세 번째 레지스터 **공문** 추가(slop-rewrite 보고서 가이드 흡수). 공문 게이트 `check_gongmun.py`(한 항목 120자 초과·개조식 '-다/-습니다' 종결 = hard). Codex·Antigravity 하네스 대응(설치 경로 탐색, Agent 도구 없을 때 인라인 실행).
 > **v2.8.0** — T-9(비유 슬롭)를 레지스터 무관 상시 규칙으로 확대 + 금지 4(설명 없는 은유·빗댄 동사) 추가. 성과보고서 실측 회귀 1건 근거.
 > **v2.7.0** — T-12(현학적 어휘·과잉 추상어) 추가 + Phase 1에 입력 사전정제 금지 조항. 실측 회귀 2건을 근거로 함(아래 참조).
@@ -37,7 +38,7 @@ description: "한국어 글의 AI 티를 지우는 윤문 스킬. 레지스터 3
 작업 시작 시 가장 먼저 다음 한 줄을 사용자에게 출력한다.
 
 ```
-humanize-korean v3.0 — 경로: {light|standard|heavy} / 레지스터: {일반|techdoc|공문} / run_id: {YYYY-MM-DD-NNN}
+humanize-korean v3.0.1 — 경로: {light|standard|heavy} / 레지스터: {일반|techdoc|공문} / run_id: {YYYY-MM-DD-NNN}
 ```
 
 (경로·레지스터는 Phase 1의 shim 실행 후에 확정되므로, 이 상태 줄은 shim 직후 출력한다.)
@@ -69,6 +70,8 @@ humanize-korean v3.0 — 경로: {light|standard|heavy} / 레지스터: {일반|
    - 입력이 hwpx 행정 양식에서 뽑은 글이다
    - 입력에 □·○·ㅇ·◦·- 기호 항목이 셋 이상이고, 항목 말끝 대부분이 명사형(~함·~임·~음·명사)이다
    - 단, **코드·명령어가 본문의 중심인 수업·기술 자료**는 공문이 아니라 techdoc이다
+   - **장르 힌트 `report`(`--genre report`, "장르: report")는 공문 판정 근거가 아니다.** 장르는 정량 지표의 기준선일 뿐이고, 레지스터는 위 조건으로만 정한다. ★v3.0.1
+   - **호출자가 문장 수·앵커(`[[id]]`)·덩어리 개수 유지를 요구하면 공문으로 판정하지 않는다.** 공문 G-1은 항목을 나눠 문장 수를 늘리므로 그 제약과 충돌한다(예: eli5가 HTML 삽입 위치를 앵커로 되찾는 호출). 이때는 일반(또는 코드가 있으면 techdoc)으로 간다. ★v3.0.1
 3. 공문이 아니고 아래 중 하나라도 해당하면 `techdoc` 레지스터로 판정하고 오버레이를 켠다.
 
 - 입력에 코드블록(```), 인라인 백틱, `함수명()` 표기, 라이브러리·명령어·에러명이 있다

@@ -1,4 +1,4 @@
-# humanizer (humanize-kr) — 한국어 AI 티 제거 윤문 스킬 (v3.0)
+# humanizer (humanize-kr) — 한국어 AI 티 제거 윤문 스킬 (v3.0.1)
 
 한국어 글에서 AI가 쓴 티를 지우는 윤문 스킬입니다. 글의 성격에 맞춰 **세 가지 모드(레지스터)** 로 고칩니다.
 Claude Code·Codex·Google Antigravity에서 같은 스킬로 씁니다.
